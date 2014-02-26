@@ -7,9 +7,7 @@ service 'mon-persister' do
   provider Chef::Provider::Service::Upstart
 end
 
-#
 # Create the log file directory
-#
 directory "/var/log/mon" do
     recursive true
     owner "persister"
@@ -18,8 +16,9 @@ directory "/var/log/mon" do
     action :create
 end
 
-dbCreds = data_bag_item(node[:mon_persister][:data_bag], 'mon_persister')
-settings = data_bag_item(node[:mon_persister][:data_bag], 'mon_persister')[:settings]
+# Todo encrypt the credentials data bag item
+credentials = data_bag_item(node[:mon_persister][:data_bag], 'mon_credentials')
+settings = data_bag_item(node[:mon_persister][:data_bag], 'mon_persister')
 
 template '/etc/mon/persister-config.yml' do
   action :create
@@ -28,8 +27,8 @@ template '/etc/mon/persister-config.yml' do
   mode "640"
   source "persister-config.yml.erb"
   variables(
-    :dbCreds => dbCreds,
-    :settings => settings,
+    :credentials => credentials,
+    :settings => settings
   )
-  notifies :restart, resources(:service => "som-persister")
+  notifies :restart, "service[mon-persister]"
 end

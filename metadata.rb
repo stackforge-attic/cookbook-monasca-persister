@@ -1,3 +1,4 @@
+name             'mon_persister'
 maintainer       "Monitoring Team"
 maintainer_email "hpcs-mon@hp.com"
 license          "All rights reserved"
