@@ -4,10 +4,10 @@ name: mon-persister
 kafkaConfiguration:
 # See http://kafka.apache.org/documentation.html#api for semantics and defaults.
   topic: <%= @settings['kafka']['metrics_topic'] %>
-  numThreads: 2
-  groupId: 1
+  numThreads: <%= @settings['kafka']['num_threads'] %>
+  groupId: <%= @settings['kafka']['group_id'] %>
   zookeeperConnect: <%= @settings['zookeeper']['hostname'] %>:2181
-  consumerId: 1
+  consumerId: <%= @settings['kafka']['consumer_id'] %>
   socketTimeoutMs: 30000
   socketReceiveBufferBytes : 65536
   fetchMessageMaxBytes: 1048576
@@ -27,11 +27,18 @@ kafkaConfiguration:
   zookeeperSyncTimeMs: 2000
 
 disruptorConfiguration:
-  bufferSize:  1048576
-  numProcessors: 2
+  bufferSize:  <%= @settings['disruptor']['buffer_size'] %>
+  numProcessors: <%= @settings['disruptor']['num_processors'] %>
 
 verticaOutputProcessorConfiguration:
-  batchSize: 10
+  batchSize: <%= @settings['vertica_output_processor']['batch_size'] %>
+
+monDeDuperConfiguration:
+  dedupeRunFrequencySeconds: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
+
+verticaMetricRepositoryConfiguration:
+  maxCacheSize: <%= @settings['vertica_metric_repository_config']['max_cache_size'] %>
+
 
 databaseConfiguration:
   driverClass: com.vertica.jdbc.Driver
