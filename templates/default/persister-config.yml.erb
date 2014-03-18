@@ -3,7 +3,7 @@ name: mon-persister
 #Kafka settings.
 kafkaConfiguration:
 # See http://kafka.apache.org/documentation.html#api for semantics and defaults.
-  topic: test
+  topic: <%= @settings['kafka']['metrics_topic'] %>
   numThreads: 2
   groupId: 1
   zookeeperConnect: <%= @settings['zookeeper']['hostname'] %>:2181
