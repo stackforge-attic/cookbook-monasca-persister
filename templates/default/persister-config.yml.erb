@@ -22,8 +22,8 @@ kafkaConfiguration:
   autoOffsetReset: largest
   consumerTimeoutMs:  -1
   clientId : 1
-  zookeeperSessionTimeoutMs : 6000
-  zookeeperConnectionTimeoutMs : 6000
+  zookeeperSessionTimeoutMs : 60000
+  zookeeperConnectionTimeoutMs : 60000
   zookeeperSyncTimeMs: 2000
 
 disruptorConfiguration:
@@ -81,7 +81,7 @@ logging:
 
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO,
   # DEBUG, TRACE, or ALL.
-  level: INFO
+  level: DEBUG
 
   # Logger-specific levels.
   loggers:
