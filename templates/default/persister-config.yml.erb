@@ -40,7 +40,7 @@ verticaMetricRepositoryConfiguration:
   maxCacheSize: <%= @settings['vertica_metric_repository_config']['max_cache_size'] %>
 
 
-databaseConfiguration:
+dataSourceFactory:
   driverClass: com.vertica.jdbc.Driver
 #  url: jdbc:vertica://mon-aw1rdd1-vertica0001.rndd.aw1.hpcloud.net:5433/som
   url: jdbc:vertica://<%= @settings['vertica']['hostname']%>:5433/<%= @settings['vertica']['dbname'] %>
@@ -71,6 +71,11 @@ databaseConfiguration:
   # the maximum lifetime of an idle connection
   closeConnectionIfIdleFor: 1 minute
 
+
+metrics:
+  frequency: 1 second
+
+
 # Logging settings.
 logging:
 
@@ -82,34 +87,22 @@ logging:
   loggers:
 
     # Sets the level for 'com.example.app' to DEBUG.
-    com.hpcloud: INFO
+    # com.example.app: DEBUG
+    # com.hpcloud: debug
+    # com.hpcloud.mon.persister.repository: DEBUG
 
-  # Settings for logging to stdout.
-  console:
-    enabled: false
+  appenders:
 
-  # Settings for logging to a file.
-  file:
+    - type: console
+      threshold: INFO
+      timeZone: UTC
+      target: stdout
 
-    enabled: true
-    # Do not write log statements below this threshold to the file.
-    threshold: ALL
-    # The time zone in which dates should be displayed.
-    timeZone: UTC
-    # A custom Logback format string.
-    logFormat: null
-    # The file to which statements will be logged.
-    currentLogFilename: /var/log/mon/mon-persister.log
-
-    # If true, log files are rotated and archived.
-    archive: true
-    # When the log file rolls over, the file will be archived to app-2012-03-15.log.gz,
-    # example.log will be truncated, and new statements written to it.
-    archivedLogFilenamePattern: /var/log/mon/mon-persister-%d.log.gz
-
-    # The maximum number of log files to archive.
-    archivedFileCount: 10
-
-  # Settings for logging to syslog.
-  syslog:
-    enabled: false
+    - type: file
+      threshold: INFO
+      archive: true
+      currentLogFilename: /var/log/mon/mon-persister.log
+      archivedLogFilenamePattern: /var/log/mon/mon-persister.log-%d.log.gz
+      archivedFileCount: 5
+      # The timezone used to format dates. HINT: USE THE DEFAULT, UTC.
+      timeZone: UTC
