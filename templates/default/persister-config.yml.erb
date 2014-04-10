@@ -79,7 +79,7 @@ logging:
 
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO,
   # DEBUG, TRACE, or ALL.
-  level: DEBUG
+  level: INFO
 
   # Logger-specific levels.
   loggers:
@@ -90,11 +90,6 @@ logging:
     # com.hpcloud.mon.persister.repository: DEBUG
 
   appenders:
-
-    - type: console
-      threshold: INFO
-      timeZone: UTC
-      target: stdout
 
     - type: file
       threshold: INFO
