@@ -65,11 +65,12 @@ dataSourceFactory:
   # whether or not idle connections should be validated
   checkConnectionWhileIdle: false
 
-  # how long a connection must be held before it can be validated
-  checkConnectionHealthWhenIdleFor: 10s
 
   # the maximum lifetime of an idle connection
   closeConnectionIfIdleFor: 1 minute
+
+  # the maximum lifetime of an idle connection
+  maxConnectionAge: 1 minute
 
 
 metrics:
