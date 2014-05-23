@@ -8,7 +8,13 @@ kafkaConfiguration:
   numThreads: <%= @settings['kafka']['num_threads'] %>
   groupId: <%= @settings['kafka']['group_id'] %>
   zookeeperConnect: <%= @settings['zookeeper']['hostname'] %>:2181
-  consumerId: <%= @settings['kafka']['consumer_id'] %>
+  consumerId: <%= #If only 1 consumer id only one box will run at a time, if consumer id for each fqdn they will all run
+  if @settings['kafka']['consumer_id'].is_a? Integer
+    @settings['kafka']['consumer_id']
+  else
+    @settings['kafka']['consumer_id'][node[:fqdn]]
+  end
+  %>
   socketTimeoutMs: 30000
   socketReceiveBufferBytes : 65536
   fetchMessageMaxBytes: 1048576
