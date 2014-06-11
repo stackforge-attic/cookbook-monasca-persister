@@ -37,8 +37,8 @@ disruptorConfiguration:
   bufferSize:  <%= @settings['disruptor']['buffer_size'] %>
   numProcessors: <%= @settings['disruptor']['num_processors'] %>
 
-verticaOutputProcessorConfiguration:
-  batchSize: <%= @settings['vertica_output_processor']['batch_size'] %>
+outputProcessorConfiguration:
+  batchSize: <%= @settings['output_processor']['batch_size'] %>
 
 monDeDuperConfiguration:
   dedupeRunFrequencySeconds: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
@@ -46,6 +46,9 @@ monDeDuperConfiguration:
 verticaMetricRepositoryConfiguration:
   maxCacheSize: <%= @settings['vertica_metric_repository_config']['max_cache_size'] %>
 
+databaseConfiguration:
+# vertica | influxdb
+  databaseType: <%= @settings['database_configuration']['database_type'] %>
 
 dataSourceFactory:
   driverClass: com.vertica.jdbc.Driver
