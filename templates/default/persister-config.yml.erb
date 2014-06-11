@@ -1,10 +1,14 @@
 name: mon-persister
 
+alarmHistoryConfiguration:
+  topic:   <%= @settings['alarm_history']['topic'] %>
+
+metricConfiguration:
+  topic:   <%= @settings['metrics']['topic'] %>
+
 #Kafka settings.
 kafkaConfiguration:
 # See http://kafka.apache.org/documentation.html#api for semantics and defaults.
-  # topic is now hard-coded to 'metrics' and 'alarm-state-transitions' in the java code.
-  topic: <%= @settings['kafka']['metrics_topic'] %>
   numThreads: <%= @settings['kafka']['num_threads'] %>
   groupId: <%= @settings['kafka']['group_id'] %>
   zookeeperConnect: <%= @settings['zookeeper']['hostname'] %>:2181
