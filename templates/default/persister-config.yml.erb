@@ -45,7 +45,7 @@ outputProcessorConfiguration:
   batchSize: <%= @settings['output_processor']['batch_size'] %>
 
 monDeDuperConfiguration:
-  dedupeRunFrequencySeconds: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
+  dedupeRunFrequencySeconds: <%= @setting['deduper_config']['dedupe_run_frequencey_seconds'] %>
 
 verticaMetricRepositoryConfiguration:
   maxCacheSize: <%= @settings['vertica_metric_repository_config']['max_cache_size'] %>
@@ -54,6 +54,15 @@ databaseConfiguration:
 # vertica | influxdb
   databaseType: <%= @settings['database_configuration']['database_type'] %>
 
+# Uncooment if databaseType is influxdb
+#influxDBConfiguration:
+#  name: mon
+#  replicationFactor: 1
+#  url: http://127.0.0.1:8086
+#  user:  root
+#  password: root
+
+# Uncomment if databaseType is vertica
 dataSourceFactory:
   driverClass: com.vertica.jdbc.Driver
 #  url: jdbc:vertica://mon-aw1rdd1-vertica0001.rndd.aw1.hpcloud.net:5433/som
