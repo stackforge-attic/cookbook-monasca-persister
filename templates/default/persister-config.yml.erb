@@ -51,15 +51,16 @@ verticaMetricRepositoryConfiguration:
   maxCacheSize: <%= @settings['vertica_metric_repository_config']['max_cache_size'] %>
 
 databaseConfiguration:
+<%- if @settings['database_configuration']['database_type'] == 'vertica' %>
 # vertica | influxdb
-  databaseType: <%= @settings['database_configuration']['database_type'] %>
+  databaseType: vertica
 
 # Uncomment if databaseType is influxdb
 #influxDBConfiguration:
 #  name: mon
 #  replicationFactor: 1
 #  url: http://127.0.0.1:8086
-#  user:  root
+#  user: root
 #  password: root
 
 # Uncomment if databaseType is vertica
@@ -73,24 +74,49 @@ dataSourceFactory:
       ssl: false
   # the maximum amount of time to wait on an empty pool before throwing an exception
   maxWaitForConnection: 1s
-
   # the SQL query to run when validating a connection's liveness
   validationQuery: "/* MyService Health Check */ SELECT 1"
-
   # the minimum number of connections to keep open
   minSize: 8
-
   # the maximum number of connections to keep open
-
-
   maxSize: 41
-
   # whether or not idle connections should be validated
   checkConnectionWhileIdle: false
-
-
   # the maximum lifetime of an idle connection
   maxConnectionAge: 1 minute
+<%- else %>
+# vertica | influxdb
+  databaseType: influxdb
+
+# Uncomment if databaseType is influxdb
+influxDBConfiguration:
+  name: <%= @setting['influxdb']['dbname'] %>
+  replicationFactor: 1
+  url: http://<%= @setting['influxdb']['hostname'] %>:8086
+  user: <%=@credentials['influxdb']['user'] %>
+  password: <%=@credentials['influxdb']['password'] %>
+
+# Uncomment if databaseType is vertica
+#dataSourceFactory:
+#  driverClass: com.vertica.jdbc.Driver
+#  url: jdbc:vertica://locahost:5433/mon
+#  user: dbadmin
+#  password: password
+#  properties:
+#      ssl: false
+#  # the maximum amount of time to wait on an empty pool before throwing an exception
+#  maxWaitForConnection: 1s
+#  # the SQL query to run when validating a connection's liveness
+#  validationQuery: "/* MyService Health Check */ SELECT 1"
+#  # the minimum number of connections to keep open
+#  minSize: 8
+#  # the maximum number of connections to keep open
+#  maxSize: 41
+#  # whether or not idle connections should be validated
+#  checkConnectionWhileIdle: false
+#  # the maximum lifetime of an idle connection
+#  maxConnectionAge: 1 minute
+<%- end %>
 
 
 metrics:
