@@ -90,9 +90,9 @@ dataSourceFactory:
 
 # Uncomment if databaseType is influxdb
 influxDBConfiguration:
-  name: <%= @setting['influxdb']['dbname'] %>
+  name: <%= @settings['influxdb']['dbname'] %>
   replicationFactor: 1
-  url: http://<%= @setting['influxdb']['hostname'] %>:8086
+  url: http://<%= @settings['influxdb']['hostname'] %>:8086
   user: <%=@credentials['influxdb']['user'] %>
   password: <%=@credentials['influxdb']['password'] %>
 
