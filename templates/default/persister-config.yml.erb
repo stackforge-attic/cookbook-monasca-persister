@@ -56,7 +56,7 @@ databaseConfiguration:
   databaseType: vertica
 
 # Uncomment if databaseType is influxdb
-#influxDBConfiguration:
+#influxDbConfiguration:
 #  name: mon
 #  replicationFactor: 1
 #  url: http://127.0.0.1:8086
@@ -89,7 +89,7 @@ dataSourceFactory:
   databaseType: influxdb
 
 # Uncomment if databaseType is influxdb
-influxDBConfiguration:
+influxDbConfiguration:
   name: <%= @settings['influxdb']['dbname'] %>
   replicationFactor: 1
   url: http://<%= @settings['influxdb']['hostname'] %>:8086
