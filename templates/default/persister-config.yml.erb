@@ -1,17 +1,12 @@
 name: mon-persister
 
 alarmHistoryConfiguration:
-  topic:   <%= @settings['alarm_history']['topic'] %>
-
-metricConfiguration:
-  topic:   <%= @settings['metrics']['topic'] %>
-
-#Kafka settings.
-kafkaConfiguration:
-# See http://kafka.apache.org/documentation.html#api for semantics and defaults.
+  batchSize: <%= @settings['output_processor']['batch_size'] %>
   numThreads: <%= @settings['kafka']['num_threads'] %>
-  groupId: <%= @settings['kafka']['group_id'] %>
-  zookeeperConnect: <%= @settings['zookeeper']['hostname'] %>:2181
+  maxBatchTime: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
+# See http://kafka.apache.org/documentation.html#api for semantics and defaults.
+  topic:   <%= @settings['alarm_history']['topic'] %>
+  groupId: <%= @settings['kafka']['group_id'] %>_<%= @settings['alarm_history']['topic'] %>
   consumerId: <%= #If only 1 consumer id only one box will run at a time, if consumer id for each fqdn they will all run
   if @settings['kafka']['consumer_id'].is_a? Integer
     @settings['kafka']['consumer_id']
@@ -19,11 +14,31 @@ kafkaConfiguration:
     @settings['kafka']['consumer_id'][node[:fqdn]]
   end
   %>
+  clientId : 1
+
+metricConfiguration:
+  batchSize: <%= @settings['output_processor']['batch_size'] %>
+  numThreads: <%= @settings['kafka']['num_threads'] %>
+  maxBatchTime: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
+# See http://kafka.apache.org/documentation.html#api for semantics and defaults.
+  topic:   <%= @settings['metrics']['topic'] %>
+  groupId: <%= @settings['kafka']['group_id'] %>_<%= @settings['metrics']['topic'] %>
+  consumerId: <%= #If only 1 consumer id only one box will run at a time, if consumer id for each fqdn they will all run
+  if @settings['kafka']['consumer_id'].is_a? Integer
+    @settings['kafka']['consumer_id']
+  else
+    @settings['kafka']['consumer_id'][node[:fqdn]]
+  end
+  %>
+  clientId : 1
+
+#Kafka settings.
+kafkaConfiguration:
+# See http://kafka.apache.org/documentation.html#api for semantics and defaults.
+  zookeeperConnect: <%= @settings['zookeeper']['hostname'] %>:2181
   socketTimeoutMs: 30000
   socketReceiveBufferBytes : 65536
   fetchMessageMaxBytes: 1048576
-  autoCommitEnable: true
-  autoCommitIntervalMs: 60000
   queuedMaxMessageChunks: 10
   rebalanceMaxRetries: 4
   fetchMinBytes:  1
@@ -31,21 +46,10 @@ kafkaConfiguration:
   rebalanceBackoffMs: 2000
   refreshLeaderBackoffMs: 200
   autoOffsetReset: largest
-  consumerTimeoutMs:  -1
-  clientId : 1
+  consumerTimeoutMs:  1000
   zookeeperSessionTimeoutMs : 60000
   zookeeperConnectionTimeoutMs : 60000
   zookeeperSyncTimeMs: 2000
-
-disruptorConfiguration:
-  bufferSize:  <%= @settings['disruptor']['buffer_size'] %>
-  numProcessors: <%= @settings['disruptor']['num_processors'] %>
-
-outputProcessorConfiguration:
-  batchSize: <%= @settings['output_processor']['batch_size'] %>
-
-monDeDuperConfiguration:
-  dedupeRunFrequencySeconds: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
 
 verticaMetricRepositoryConfiguration:
   maxCacheSize: <%= @settings['vertica_metric_repository_config']['max_cache_size'] %>
