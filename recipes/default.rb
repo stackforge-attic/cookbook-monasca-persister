@@ -1,6 +1,6 @@
 # encoding: UTF-8#
 #
-package 'mon-persister' do # The package depends on openjdk-7-jre
+package 'monasca-persister' do # The package depends on openjdk-7-jre
   action :upgrade
 end
 
