@@ -1,7 +1,8 @@
 # encoding: UTF-8#
 #
-node.default[:mon_persister][:group] = 'persister'
-node.default[:mon_persister][:data_bag] = 'mon_persister'
+node.default[:monasca_persister][:user] = 'persister'
+node.default[:monasca_persister][:group] = 'monasca'
+node.default[:monasca_persister][:data_bag] = 'monasca_persister'
 
 # Sysctl settings
 # This style is picked up by the sysctl cookbook in HP Cloud basenode

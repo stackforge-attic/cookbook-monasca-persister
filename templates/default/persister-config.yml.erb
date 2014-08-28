@@ -1,9 +1,9 @@
-name: mon-persister
+name: monasca-persister
 
 alarmHistoryConfiguration:
-  batchSize: <%= @settings['output_processor']['batch_size'] %>
-  numThreads: <%= @settings['kafka']['num_threads'] %>
-  maxBatchTime: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
+  batchSize: <%= @settings['alarm_history']['batch_size'] %>
+  numThreads: <%= @settings['alarm_history']['num_threads'] %>
+  maxBatchTime: <%= @settings['alarm_history']['maxBatchTime'] %>
 # See http://kafka.apache.org/documentation.html#api for semantics and defaults.
   topic:   <%= @settings['alarm_history']['topic'] %>
   groupId: <%= @settings['kafka']['group_id'] %>_<%= @settings['alarm_history']['topic'] %>
@@ -17,9 +17,9 @@ alarmHistoryConfiguration:
   clientId : 1
 
 metricConfiguration:
-  batchSize: <%= @settings['output_processor']['batch_size'] %>
-  numThreads: <%= @settings['kafka']['num_threads'] %>
-  maxBatchTime: <%= @settings['deduper_config']['dedupe_run_frequencey_seconds'] %>
+  batchSize: <%= @settings['metrics']['batch_size'] %>
+  numThreads: <%= @settings['metrics']['num_threads'] %>
+  maxBatchTime: <%= @settings['metrics']['maxBatchTime'] %>
 # See http://kafka.apache.org/documentation.html#api for semantics and defaults.
   topic:   <%= @settings['metrics']['topic'] %>
   groupId: <%= @settings['kafka']['group_id'] %>_<%= @settings['metrics']['topic'] %>
@@ -147,8 +147,8 @@ logging:
     - type: file
       threshold: INFO
       archive: true
-      currentLogFilename: /var/log/mon/mon-persister.log
-      archivedLogFilenamePattern: /var/log/mon/mon-persister.log-%d.log.gz
+      currentLogFilename: /var/log/monasca/monasca-persister.log
+      archivedLogFilenamePattern: /var/log/monasca/monasca-persister.log-%d.log.gz
       archivedFileCount: 5
       # The timezone used to format dates. HINT: USE THE DEFAULT, UTC.
       timeZone: UTC
