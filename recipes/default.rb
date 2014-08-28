@@ -1,44 +1,54 @@
 # encoding: UTF-8#
 #
-package 'mon-persister' do # The package depends on openjdk-7-jre
+
+group node[:monasca_persister][:group] do
+  action :create
+end
+user node[:monasca_persister][:user] do
+  action :create
+  system true
+  gid node[:monasca_persister][:group]
+end
+
+package 'monasca-persister' do # The package depends on openjdk-7-jre
   action :upgrade
 end
 
-service 'mon-persister' do
+service 'monasca-persister' do
   action :enable
   provider Chef::Provider::Service::Upstart
 end
 
 # Create the log file directory
-directory '/var/log/mon' do
+directory '/var/log/monasca' do
   recursive true
-  owner 'persister'
-  group node[:mon_persister][:group]
-  mode 0755
+  owner node[:monasca_persister][:user]
+  group node[:monasca_persister][:group]
+  mode 0775
   action :create
 end
 
 # TODO: encrypt the credentials data bag item
-credentials = data_bag_item(node[:mon_persister][:data_bag], 'mon_credentials')
-settings = data_bag_item(node[:mon_persister][:data_bag], 'mon_persister')
+credentials = data_bag_item(node[:monasca_persister][:data_bag], 'credentials')
+settings = data_bag_item(node[:monasca_persister][:data_bag], 'monasca_persister')
 
-template '/etc/mon/persister-config.yml' do
+template '/etc/monasca/persister-config.yml' do
   action :create
   owner 'root'
-  group node[:mon_persister][:group]
+  group node[:monasca_persister][:group]
   mode '640'
   source 'persister-config.yml.erb'
   variables(
     credentials: credentials,
     settings: settings
   )
-  notifies :restart, 'service[mon-persister]'
+  notifies :restart, 'service[monasca-persister]'
 end
 
 if settings['database_configuration']['database_type'] == 'vertica'
 
   # Create the directory for the vertica JDBC jar
-  directory '/opt/mon/vertica' do
+  directory '/opt/monasca/vertica' do
     recursive true
     owner 'root'
     group 'root'
@@ -50,7 +60,7 @@ if settings['database_configuration']['database_type'] == 'vertica'
   bash 'vertica_jdbc.jar' do
     action :run
     code <<-EOL
-    DEST=/opt/mon/vertica/vertica_jdbc.jar
+    DEST=/opt/monasca/vertica/vertica_jdbc.jar
     if [ ! -s ${DEST} ]; then
        SRC=`ls /vagrant/vertica-jdbc-*.jar`
        if [ $? != 0 ]; then
