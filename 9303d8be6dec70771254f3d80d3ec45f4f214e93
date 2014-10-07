@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: Rob Raymond <rob.raymond@hp.com>
+Workflow+1: Rob Raymond <rob.raymond@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Tue, 07 Oct 2014 15:24:26 +0000
+Reviewed-on: https://review.openstack.org/126575
+Project: stackforge/cookbook-monasca-persister
+Branch: refs/heads/master
